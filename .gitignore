@@ -1,0 +1,28 @@
+# .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+.idea
+
+# 虚拟环境目录
+venv/
+env/
+ENV/
+.env/
+.venv/
+
+# 临时文件
+tmp*
+*.tmp
+*.tmp.*
+*.bak
+*.bak.*
+*.swp
+*.swp.*
