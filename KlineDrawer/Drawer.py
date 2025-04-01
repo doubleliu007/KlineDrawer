@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import pandas as pd 
 from TushareDataLoader import TushareDataOperator
 import mplfinance as mpf
@@ -52,7 +52,10 @@ class KlineDrawer:
                 raise TypeError("vlines_dates 必须是列表类型")
             
             if not all(isinstance(date, datetime.date) for date in vlines_dates):
-                raise TypeError("vlines_dates 中的所有元素必须是 datetime.date 类型")
+                tmp = []
+                for date in vlines_dates:
+                    tmp.append(pd.to_datetime(date).date())
+                vlines_dates = tmp
             
             if vlines_colors is not None and len(vlines_dates) != len(vlines_colors):
                 raise ValueError("vlines_dates 和 vlines_colors 的长度必须相同")
@@ -82,7 +85,9 @@ class KlineDrawer:
                     raise ValueError("mark_list_colors 的键必须与 mark_list_dict 的键匹配")
 
         if kdata is None:
-            kdata = TushareDataLoader().load_data(stock_code, start_date, end_date)
+            kdata = TushareDataOperator().load_data(stock_code, start_date, end_date)
+            # 确保日期索引和列名
+            kdata.index = pd.to_datetime(kdata.date)
         else:
             original_data = kdata.copy()
             kdata = kdata[kdata.index >= start_date]
@@ -135,16 +140,18 @@ class KlineDrawer:
         else:
             apds = None
 
-        # 基础绘图参数
         plot_params = {
             'type': 'candle',
             'style': 'yahoo',
-            'vlines': vlines,
             'volume': True,
             'figsize': (15, 8),
-            'addplot': apds,
             'returnfig': True  # 返回图形对象
         }
+        if vlines:
+            # 基础绘图参数
+            plot_params['vlines'] = vlines
+        if apds:
+            plot_params['addplot'] = apds
 
         # 绘制图形并获取图形对象
         fig, axes = mpf.plot(kdata, **plot_params)
