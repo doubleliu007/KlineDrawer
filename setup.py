@@ -14,7 +14,7 @@ requirements.append('TushareDataLoader @ git+https://github.com/doubleliu007/Tus
 
 setup(
     name="KlineDrawer",
-    version="0.0.1",
+    version="0.0.2",
     packages=find_packages(),
     install_requires=requirements,
     author="DoubleLiu",
