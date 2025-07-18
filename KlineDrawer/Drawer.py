@@ -129,7 +129,7 @@ class KlineDrawer:
                 mark_series = null_mark_series
                 apds.append(
                     mpf.make_addplot(
-                        level_series,
+                        mark_series,
                         type='scatter',
                         markersize=mark_list_sizes.get(key, 100),
                         marker='^',
